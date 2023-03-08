@@ -70,12 +70,13 @@ const gameFlow = (() => {
     const turn = 0;
     const ticTacToeGrid = document.getElementById('tic-tac-toe');
     ticTacToeGrid.addEventListener('click', (e) => {
+        ticTacToeGrid.classList.add('no-pointer-events');
         const target = e.target.id;
         if (gameboard.checkAvailable(target)) {
             if (turn % 2 === 0) {
                 gameboard.updateArray(target, xPlayer.string, e);    
             } else {
-            gameboard.updateArray(target, oPlayer.string, e);
+                gameboard.updateArray(target, oPlayer.string, e);
             }
             incrementTurn();   
         } else {
@@ -85,6 +86,8 @@ const gameFlow = (() => {
         const victoryCheck = gameboard.checkVictory();
         if (victoryCheck.win) {
             gameFlow.endGame(victoryCheck.player);
+        } else {
+            ticTacToeGrid.classList.remove('no-pointer-events');
         }
     })
 
