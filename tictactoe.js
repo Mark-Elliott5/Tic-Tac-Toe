@@ -1,9 +1,11 @@
 const gameboard = (() => {
     const array = new Array(9);
+
     const updateArray = (target, playerString, e) => {
         array[target] = playerString;
         displayController.update(playerString, e);
     };
+
     const checkAvailable = (target) => {
         if (array[target] === undefined) {
             return true;
@@ -11,6 +13,7 @@ const gameboard = (() => {
             return false;
         }
     };
+
     const checkVictory = () => {
         const oneTwoThreeString = array.slice(0,2).join('');
         const fourFiveSixString = array.slice(3,5).join('');
@@ -30,16 +33,20 @@ const gameboard = (() => {
                 return { win: true, player: victoryPaths[i][0]};
             }
         }
-    }
+    };
+
     const clearArray = () => {
         array = new Array(9);
-    }
-    return { updateArray, checkAvailable, checkVictory, clearArray }
+    };
+
+    return { updateArray, checkAvailable, checkVictory, clearArray };
 })();
 
 const player = (string) => {
-    const winCount = 0
+    const winCount = 0;
+
     const updateWinCount = () => {};
+
     return { string, winCount };
 };
 
@@ -51,22 +58,28 @@ const displayController = (player) => {
     const update = (playerString, e) => {
         const square = e.target;
         square.innerText = playerString;
-    }
+    };
+
     const displayVictory = () => {
         const victoryScreen = document.getElementById('victory-screen');
         victoryScreen.classList.remove('hidden');
     };
+
     const hideVictory = () => {
         const ticTacToeGrid = document.getElementById('tic-tac-toe');
         ticTacToeGrid.classList.remove('no-pointer-events');
         const victoryScreen = document.getElementById('victory-screen');
         victoryScreen.classList.add('hidden');
-    }
+    };
+
+    return { update, displayVictory, hideVictory };
 }
 
 const gameFlow = (() => {
     const turn = 0;
+
     const ticTacToeGrid = document.getElementById('tic-tac-toe');
+
     ticTacToeGrid.addEventListener('click', (e) => {
         ticTacToeGrid.classList.add('no-pointer-events');
         const target = e.target.id;
@@ -89,7 +102,10 @@ const gameFlow = (() => {
         }
     })
 
-    const incrementTurn = () => { gameFlow.turn++ };
+    const incrementTurn = () => {
+        gameFlow.turn++
+    };
+
     const endGame = () => {
         displayController.displayVictory();
         if (turn % 2 === 0) {
@@ -97,11 +113,13 @@ const gameFlow = (() => {
         } else {
             oPlayer.addWin();
         }
-    }
+    };
+
     const newGame = () => {
         turn = 0;
         displayController.hideVictory();
         gameboard.clearArray();
-    }
+    };
+
     return { checkVictory, incrementTurn, newGame };
 })();
