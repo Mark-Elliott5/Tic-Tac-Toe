@@ -53,8 +53,6 @@ const displayController = (player) => {
         square.innerText = playerString;
     }
     const displayVictory = () => {
-        const ticTacToeGrid = document.getElementById('tic-tac-toe');
-        ticTacToeGrid.classList.add('no-pointer-events');
         const victoryScreen = document.getElementById('victory-screen');
         victoryScreen.classList.remove('hidden');
     };
