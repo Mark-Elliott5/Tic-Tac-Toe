@@ -26,3 +26,11 @@ main {
 .square {
     border: 1px solid white;
 }
+
+.no-pointer-events {
+    pointer-events: none;
+}
+
+.hidden {
+    visibility: none;
+}

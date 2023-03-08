@@ -1,6 +1,9 @@
 const gameboard = (() => {
     const array = new Array(9);
-    // const updateArray = () => {};
+    const updateArray = (target, playerString, e) => {
+        array[target] = playerString;
+        displayController.update(playerString, e);
+    };
     const checkAvailable = (target) => {
         if (array[target] === undefined) {
             return true;
@@ -25,12 +28,11 @@ const gameboard = (() => {
                 break;
             }
         }
-        
-        if ((array[0]) && (array[1]) && (array[2]) == ('X' || 'O')) {
-
-        }
     }
-    return { array }
+    const clearArray = () => {
+        array = new Array(9);
+    }
+    return { updateArray, checkAvailable, checkVictory, clearArray }
 })();
 
 const player = (string) => {
@@ -44,14 +46,27 @@ const xPlayer = player('X');
 const oPlayer = player('O');
 
 const displayController = (player) => {
-    const grid = document.getElementById('tic-tac-toe');
-    grid.addEventListener('click', (e) => {
+    // const grid = document.getElementById('tic-tac-toe');
+    // grid.addEventListener('click', (e) => {
+    //     const square = e.target;
+    //     square.innerText = player.string;
+    // })
+    const update = (playerString, e) => {
         const square = e.target;
-        square.innerText = player.string;
-    })
-    const displayVictory = () => {};
-    const updateArray = (array) => {};
-    return { string };
+        square.innerText = playerString;
+    }
+    const displayVictory = () => {
+        const ticTacToeGrid = document.getElementById('tic-tac-toe');
+        ticTacToeGrid.classList.add('no-pointer-events');
+        const victoryScreen = document.getElementById('victory-screen');
+        victoryScreen.classList.remove('hidden');
+    };
+    const hideVictory = () => {
+        const ticTacToeGrid = document.getElementById('tic-tac-toe');
+        ticTacToeGrid.classList.remove('no-pointer-events');
+        const victoryScreen = document.getElementById('victory-screen');
+        victoryScreen.classList.add('hidden');
+    }
 }
 
 const gameFlow = (() => {
@@ -61,13 +76,31 @@ const gameFlow = (() => {
         const target = e.target.id;
         if (gameboard.checkAvailable(target)) {
             if (turn % 2 === 0) {
-                gameboard.updateArray(target, xPlayer.string)    
+                gameboard.updateArray(target, xPlayer.string, e);    
             } else {
-            gameboard.updateArray(target, )
-            }   
+            gameboard.updateArray(target, oPlayer.string, e);
+            }
+            incrementTurn();   
+        } else {
+            return;
+        }
+
+        if (gameboard.checkVictory()) {
+            gameFlow.endGame();
         }
     })
 
     const incrementTurn = () => { gameFlow.turn++ };
+    const endGame = () => {
+        displayController.displayVictory();
+        if (turn % 2 === 0) {
+            xPlayer.addWin();
+        } else { oPlayer.addWin(turn); }
+    }
+    const newGame = () => {
+        turn = 0;
+        displayController.hideVictory();
+        gameboard.clearArray();
+    }
     return { checkVictory, incrementTurn };
 })();
