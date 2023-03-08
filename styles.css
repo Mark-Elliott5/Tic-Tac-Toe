@@ -34,3 +34,7 @@ main {
 .hidden {
     visibility: none;
 }
+
+button {
+    padding: 8px;
+}

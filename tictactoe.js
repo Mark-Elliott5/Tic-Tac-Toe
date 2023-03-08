@@ -7,7 +7,9 @@ const gameboard = (() => {
     const checkAvailable = (target) => {
         if (array[target] === undefined) {
             return true;
-        } else { return false; }
+        } else {
+            return false;
+        }
     };
     const checkVictory = () => {
         const oneTwoThreeString = array.slice(0,2).join('');
@@ -24,8 +26,8 @@ const gameboard = (() => {
             threeSixNineString, oneFiveNineString, threeFiveSevenString);
         for (let i = 0; i < victoryPaths.length; i++) {
             if ((victoryPaths[i] === 'XXX') || (victoryPaths[i] === 'OOO')) {
-                gameFlow.victory();
-                break;
+                console.log(victoryPaths[i]);
+                return { win: true, player: victoryPaths[i][0]};
             }
         }
     }
@@ -46,11 +48,6 @@ const xPlayer = player('X');
 const oPlayer = player('O');
 
 const displayController = (player) => {
-    // const grid = document.getElementById('tic-tac-toe');
-    // grid.addEventListener('click', (e) => {
-    //     const square = e.target;
-    //     square.innerText = player.string;
-    // })
     const update = (playerString, e) => {
         const square = e.target;
         square.innerText = playerString;
@@ -85,8 +82,9 @@ const gameFlow = (() => {
             return;
         }
 
-        if (gameboard.checkVictory()) {
-            gameFlow.endGame();
+        const victoryCheck = gameboard.checkVictory();
+        if (victoryCheck.win) {
+            gameFlow.endGame(victoryCheck.player);
         }
     })
 
@@ -95,12 +93,14 @@ const gameFlow = (() => {
         displayController.displayVictory();
         if (turn % 2 === 0) {
             xPlayer.addWin();
-        } else { oPlayer.addWin(turn); }
+        } else {
+            oPlayer.addWin();
+        }
     }
     const newGame = () => {
         turn = 0;
         displayController.hideVictory();
         gameboard.clearArray();
     }
-    return { checkVictory, incrementTurn };
+    return { checkVictory, incrementTurn, newGame };
 })();
