@@ -1,9 +1,11 @@
+"use strict"
+
 const gameboard = (() => {
     const array = new Array(9);
 
-    const updateArray = (target, playerString, e) => {
+    const updateArray = (target, playerString) => {
         array[target] = playerString;
-        displayController.update(playerString, e);
+        displayController.update(array);
     };
 
     const checkAvailable = (target) => {
@@ -27,19 +29,23 @@ const gameboard = (() => {
         victoryPaths.push(oneTwoThreeString, fourFiveSixString,
             sevenEightNineString, oneFourSevenString, twoFiveEightString, 
             threeSixNineString, oneFiveNineString, threeFiveSevenString);
+        let win = false;
+        let player = '';
         for (let i = 0; i < victoryPaths.length; i++) {
             if ((victoryPaths[i] === 'XXX') || (victoryPaths[i] === 'OOO')) {
                 console.log(victoryPaths[i]);
-                return { win: true, player: victoryPaths[i][0]};
+                win = true;
+                player = victoryPaths[i][0];
             }
         }
+        return { win, player };
     };
 
     const clearArray = () => {
         array = new Array(9);
     };
 
-    return { updateArray, checkAvailable, checkVictory, clearArray };
+    return { array, updateArray, checkAvailable, checkVictory, clearArray };
 })();
 
 const player = (string) => {
@@ -54,10 +60,12 @@ const xPlayer = player('X');
 
 const oPlayer = player('O');
 
-const displayController = (player) => {
-    const update = (playerString, e) => {
-        const square = e.target;
-        square.innerText = playerString;
+const displayController = (() => {
+    const update = (array) => {
+        const ticTacToeBoxes = document.getElementsByClassName('square');
+        for (let i = 0; i < array.length; i++) {
+            ticTacToeBoxes[i].innerText = array[i];
+        }
     };
 
     const displayVictory = () => {
@@ -73,10 +81,10 @@ const displayController = (player) => {
     };
 
     return { update, displayVictory, hideVictory };
-}
+})()
 
 const gameFlow = (() => {
-    const turn = 0;
+    let turn = 0;
 
     const ticTacToeGrid = document.getElementById('tic-tac-toe');
 
@@ -85,9 +93,9 @@ const gameFlow = (() => {
         const target = e.target.id;
         if (gameboard.checkAvailable(target)) {
             if (turn % 2 === 0) {
-                gameboard.updateArray(target, xPlayer.string, e);    
+                gameboard.updateArray(target, xPlayer.string);    
             } else {
-                gameboard.updateArray(target, oPlayer.string, e);
+                gameboard.updateArray(target, oPlayer.string);
             }
             incrementTurn();   
         } else {
@@ -103,7 +111,7 @@ const gameFlow = (() => {
     })
 
     const incrementTurn = () => {
-        gameFlow.turn++
+        turn++;
     };
 
     const endGame = () => {
@@ -121,5 +129,5 @@ const gameFlow = (() => {
         gameboard.clearArray();
     };
 
-    return { checkVictory, incrementTurn, newGame };
+    return { incrementTurn, newGame };
 })();
