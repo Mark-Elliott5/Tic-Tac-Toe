@@ -108,7 +108,7 @@ const gameFlow = (() => {
 
         const victoryCheck = gameboard.checkVictory();
         if (victoryCheck.win) {
-            gameFlow.endGame(victoryCheck.player);
+            endGame(victoryCheck.player);
         } else {
             ticTacToeGrid.classList.remove('no-pointer-events');
         }
