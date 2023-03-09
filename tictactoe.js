@@ -99,6 +99,7 @@ const gameFlow = (() => {
             }
             incrementTurn();   
         } else {
+            ticTacToeGrid.classList.remove('no-pointer-events');
             return;
         }
 
