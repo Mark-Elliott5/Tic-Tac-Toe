@@ -49,11 +49,13 @@ const gameboard = (() => {
 })();
 
 const player = (string) => {
-    const winCount = 0;
+    let winCount = 0;
 
-    const updateWinCount = () => {};
+    const addWin = () => {
+        winCount++;
+    };
 
-    return { string, winCount };
+    return { string, winCount, addWin };
 };
 
 const xPlayer = player('X');
@@ -90,6 +92,7 @@ const gameFlow = (() => {
     let turn = 0;
 
     const ticTacToeGrid = document.getElementById('tic-tac-toe');
+    const newGameButton = document.getElementById('new-game');
 
     ticTacToeGrid.addEventListener('click', (e) => {
         ticTacToeGrid.classList.add('no-pointer-events');
@@ -108,11 +111,14 @@ const gameFlow = (() => {
 
         const victoryCheck = gameboard.checkVictory();
         if (victoryCheck.win) {
+            console.log(`${victoryCheck.player} has won the match!`);
             endGame(victoryCheck.player);
         } else {
             ticTacToeGrid.classList.remove('no-pointer-events');
         }
     })
+
+    newGameButton.addEventListener('click', newGame);
 
     const incrementTurn = () => {
         turn++;
