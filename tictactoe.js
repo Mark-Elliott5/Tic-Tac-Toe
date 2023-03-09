@@ -64,6 +64,9 @@ const displayController = (() => {
     const update = (array) => {
         const ticTacToeBoxes = document.getElementsByClassName('square');
         for (let i = 0; i < array.length; i++) {
+            if (array[i] === undefined) {
+                continue;
+            }
             ticTacToeBoxes[i].innerText = array[i];
         }
     };
