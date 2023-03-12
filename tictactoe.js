@@ -1,7 +1,7 @@
 "use strict"
 
 const gameboard = (() => {
-    const array = new Array(9);
+    let array = ['','','','','','','','',''];
 
     const updateArray = (target, playerString) => {
         array[target] = playerString;
@@ -9,7 +9,7 @@ const gameboard = (() => {
     };
 
     const checkAvailable = (target) => {
-        if (array[target] === undefined) {
+        if (array[target] === '') {
             return true;
         } else {
             return false;
@@ -32,17 +32,22 @@ const gameboard = (() => {
         let win = false;
         let player = '';
         for (let i = 0; i < victoryPaths.length; i++) {
+            console.log(victoryPaths[i]);
             if ((victoryPaths[i] === 'XXX') || (victoryPaths[i] === 'OOO')) {
                 console.log(victoryPaths[i]);
                 win = true;
                 player = victoryPaths[i][0];
+                break;
             }
         }
         return { win, player };
     };
 
     const clearArray = () => {
-        array = new Array(9);
+        for (let i = 0; i < array.length; i++) {
+            array[i] = '';
+        }
+        displayController.update(array);
     };
 
     return { array, updateArray, checkAvailable, checkVictory, clearArray };
@@ -66,9 +71,6 @@ const displayController = (() => {
     const update = (array) => {
         const ticTacToeBoxes = document.getElementsByClassName('square');
         for (let i = 0; i < array.length; i++) {
-            if (array[i] === undefined) {
-                continue;
-            }
             ticTacToeBoxes[i].innerText = array[i];
         }
     };
@@ -90,6 +92,25 @@ const displayController = (() => {
 
 const gameFlow = (() => {
     let turn = 0;
+
+    const incrementTurn = () => {
+        turn++;
+    };
+
+    const endGame = () => {
+        displayController.displayVictory();
+        if (turn % 2 === 0) {
+            xPlayer.addWin();
+        } else {
+            oPlayer.addWin();
+        }
+    };
+
+    const newGame = () => {
+        turn = 0;
+        displayController.hideVictory();
+        gameboard.clearArray();
+    };
 
     const ticTacToeGrid = document.getElementById('tic-tac-toe');
     const newGameButton = document.getElementById('new-game');
@@ -119,25 +140,6 @@ const gameFlow = (() => {
     })
 
     newGameButton.addEventListener('click', newGame);
-
-    const incrementTurn = () => {
-        turn++;
-    };
-
-    const endGame = () => {
-        displayController.displayVictory();
-        if (turn % 2 === 0) {
-            xPlayer.addWin();
-        } else {
-            oPlayer.addWin();
-        }
-    };
-
-    const newGame = () => {
-        turn = 0;
-        displayController.hideVictory();
-        gameboard.clearArray();
-    };
 
     return { incrementTurn, newGame };
 })();
