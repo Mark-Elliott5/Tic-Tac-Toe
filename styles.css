@@ -23,6 +23,14 @@ main {
     height: 100%;
 }
 
+#victory-screen {
+    position: fixed;
+    border: 1px solid white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .square {
     border: 1px solid white;
 }
@@ -32,7 +40,7 @@ main {
 }
 
 .hidden {
-    visibility: none;
+    display: none;
 }
 
 button {
