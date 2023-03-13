@@ -17,9 +17,9 @@ const gameboard = (() => {
     };
 
     const checkVictory = () => {
-        const oneTwoThreeString = array.slice(0,2).join('');
-        const fourFiveSixString = array.slice(3,5).join('');
-        const sevenEightNineString = array.slice(6,8).join('');
+        const oneTwoThreeString = array.slice(0,3).join('');
+        const fourFiveSixString = array.slice(3,6).join('');
+        const sevenEightNineString = array.slice(6,9).join('');
         const oneFourSevenString = array[0] + array[3] + array[6];
         const twoFiveEightString = array[1] + array[4] + array[7];
         const threeSixNineString = array[2] + array[5] + array[8];
@@ -32,14 +32,14 @@ const gameboard = (() => {
         let win = false;
         let player = '';
         for (let i = 0; i < victoryPaths.length; i++) {
-            console.log(victoryPaths[i]);
+            console.log(`Path ${i+1}:${victoryPaths[i]}`);
             if ((victoryPaths[i] === 'XXX') || (victoryPaths[i] === 'OOO')) {
                 console.log(victoryPaths[i]);
                 win = true;
                 player = victoryPaths[i][0];
                 break;
             }
-        }
+        } console.log(`______________`);
         return { win, player };
     };
 
@@ -57,7 +57,7 @@ const player = (string) => {
     let winCount = 0;
 
     const addWin = () => {
-        winCount++;
+        player.winCount++;
     };
 
     return { string, winCount, addWin };
@@ -75,8 +75,15 @@ const displayController = (() => {
         }
     };
 
-    const displayVictory = () => {
+    const displayVictory = (winner) => {
         const victoryScreen = document.getElementById('victory-screen');
+        const victoryText = document.getElementById('victory-text')
+        if (winner) {
+            victoryText.innerText = `Congratulations ${winner}! You have won 
+            the match!`;
+        } else {
+            victoryText.innerText = 'The match is a draw!';
+        }
         victoryScreen.classList.remove('hidden');
     };
 
@@ -97,12 +104,16 @@ const gameFlow = (() => {
         turn++;
     };
 
-    const endGame = () => {
-        displayController.displayVictory();
-        if (turn % 2 === 0) {
-            xPlayer.addWin();
-        } else {
-            oPlayer.addWin();
+    const endGame = (winner) => {
+        if (winner) {
+            if (winner === 'X') {
+                xPlayer.addWin();
+            } else {
+                oPlayer.addWin();
+            }
+            displayController.displayVictory(winner);
+        } if (!(winner)) {
+            displayController.displayVictory();
         }
     };
 
@@ -134,6 +145,9 @@ const gameFlow = (() => {
         if (victoryCheck.win) {
             console.log(`${victoryCheck.player} has won the match!`);
             endGame(victoryCheck.player);
+        } if ((turn === 9) && (!(victoryCheck.win))) {
+            console.log('The match is a draw!');
+            displayController.displayVictory();
         } else {
             ticTacToeGrid.classList.remove('no-pointer-events');
         }
@@ -141,5 +155,5 @@ const gameFlow = (() => {
 
     newGameButton.addEventListener('click', newGame);
 
-    return { incrementTurn, newGame };
+    return { turn, incrementTurn, newGame };
 })();
