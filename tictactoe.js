@@ -149,24 +149,19 @@ const gameFlow = (() => {
             ticTacToeGrid.classList.remove('no-pointer-events');
             return;
         }
+        gameboard.updateArray(aiMove(), oPlayer.string);
+        incrementTurn();
 
-        const xVictoryCheck = gameboard.checkVictory();
-        if (xVictoryCheck.win) {
+        const victoryCheck = gameboard.checkVictory();
+        if (victoryCheck.win) {
             console.log(`${victoryCheck.player} has won the match!`);
             endGame(victoryCheck.player);
         } if ((turn === 9) && (!(victoryCheck.win))) {
             console.log('The match is a draw!');
             displayController.displayVictory();
-        } else if (!(xVictoryCheck.win)) {
+        } else {
             ticTacToeGrid.classList.remove('no-pointer-events');
-            gameboard.updateArray(aiMove(), oPlayer.string);
-            incrementTurn();
         }
-        const oVictoryCheck = gameboard.checkVictory();
-        if (oVictoryCheck.win) {
-            console.log(`${oVictoryCheck.player} has won the match!`);
-            endGame(oVictoryCheck.player);
-        } 
     })
 
     newGameButton.addEventListener('click', newGame);
