@@ -6,7 +6,19 @@ html, body {
 body {
     background-color: black;
     color: white;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+#sidebar {
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr 1fr;
+    color: inherit;
+    border: 1px solid white;
+}
+
+#sidebar > div {
+    color: inherit;
 }
 
 main {
@@ -14,13 +26,15 @@ main {
     justify-content: center;
     align-items: center;
     flex: 1;
+    position: relative;
 }
 
 #tic-tac-toe {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    width: 400px;
+    height: 400px;
 }
 
 #victory-screen {
@@ -33,6 +47,10 @@ main {
 
 .square {
     border: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xxx-large;
 }
 
 .no-pointer-events {
