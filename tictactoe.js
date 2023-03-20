@@ -123,6 +123,19 @@ const gameFlow = (() => {
         gameboard.clearArray();
     };
 
+    const aiMove = () => {
+        const easyDifficulty = document.getElementById('easy');
+        if (easyDifficulty.checked) {
+            let possibleChoices = [];
+            for (let i = 0; i < gameboard.array.length; i++) {
+                if (gameboard.checkAvailable(i)) {
+                    possibleChoices.push(i);
+                }
+            }
+            return possibleChoices[Math.floor(Math.random() * possibleChoices.length)];
+        }
+    }
+
     const ticTacToeGrid = document.getElementById('tic-tac-toe');
     const newGameButton = document.getElementById('new-game');
 
@@ -130,30 +143,33 @@ const gameFlow = (() => {
         ticTacToeGrid.classList.add('no-pointer-events');
         const target = e.target.id;
         if (gameboard.checkAvailable(target)) {
-            if (turn % 2 === 0) {
-                gameboard.updateArray(target, xPlayer.string);    
-            } else {
-                gameboard.updateArray(target, oPlayer.string);
-            }
+            gameboard.updateArray(target, xPlayer.string);
             incrementTurn();   
         } else {
             ticTacToeGrid.classList.remove('no-pointer-events');
             return;
         }
 
-        const victoryCheck = gameboard.checkVictory();
-        if (victoryCheck.win) {
+        const xVictoryCheck = gameboard.checkVictory();
+        if (xVictoryCheck.win) {
             console.log(`${victoryCheck.player} has won the match!`);
             endGame(victoryCheck.player);
         } if ((turn === 9) && (!(victoryCheck.win))) {
             console.log('The match is a draw!');
             displayController.displayVictory();
-        } else {
+        } else if (!(xVictoryCheck.win)) {
             ticTacToeGrid.classList.remove('no-pointer-events');
+            gameboard.updateArray(aiMove(), oPlayer.string);
+            incrementTurn();
         }
+        const oVictoryCheck = gameboard.checkVictory();
+        if (oVictoryCheck.win) {
+            console.log(`${oVictoryCheck.player} has won the match!`);
+            endGame(oVictoryCheck.player);
+        } 
     })
 
     newGameButton.addEventListener('click', newGame);
 
-    return { turn, incrementTurn, newGame };
+    return { turn, incrementTurn, newGame, aiMove};
 })();
