@@ -53,19 +53,17 @@ const gameboard = (() => {
     return { array, updateArray, checkAvailable, checkVictory, clearArray };
 })();
 
-const player = (string) => {
-    let winCount = 0;
-
+const player = (string, winCount) => {
     const addWin = () => {
-        player.winCount++;
+        obj.winCount++;
     };
-
-    return { string, winCount, addWin };
+    const obj = { string, winCount, addWin };
+    return obj;
 };
 
-const xPlayer = player('X');
+const xPlayer = player('X', 0);
 
-const oPlayer = player('O');
+const oPlayer = player('O', 0);
 
 const displayController = (() => {
     const update = (array) => {
@@ -94,7 +92,14 @@ const displayController = (() => {
         victoryScreen.classList.add('hidden');
     };
 
-    return { update, displayVictory, hideVictory };
+    const updateScore = () => {
+        const xScore = document.getElementById('x-player-score');
+        xScore.textContent = xPlayer.winCount;
+        const oScore = document.getElementById('o-player-score');
+        oScore.textContent = oPlayer.winCount;
+    }
+
+    return { update, displayVictory, hideVictory, updateScore };
 })()
 
 const gameFlow = (() => {
@@ -112,6 +117,7 @@ const gameFlow = (() => {
                 oPlayer.addWin();
             }
             displayController.displayVictory(winner);
+            displayController.updateScore();
         } if (!(winner)) {
             displayController.displayVictory();
         }
