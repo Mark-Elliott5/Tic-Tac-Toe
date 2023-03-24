@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-    background-color: black;
+    background: linear-gradient(to right, #4E31AA, #2F58CD);
     color: white;
     display: grid;
     grid-template-columns: 1fr 3fr;
@@ -40,13 +40,17 @@ main {
 #victory-screen {
     position: fixed;
     border: 1px solid white;
+    backdrop-filter: blur(2px);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 10px;
 }
 
 .square {
     border: 1px solid white;
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;

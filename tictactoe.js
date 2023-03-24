@@ -143,17 +143,16 @@ const gameFlow = (() => {
             endGame(victoryCheck.player);
             ticTacToeGrid.classList.add('no-pointer-events');
             return true;
-        } if ((turn === 9) && (!(victoryCheck.win))) {
+        } if (!(victoryCheck.win)) {
+            if (turn === 9) {
             console.log('The match is a draw!');
             displayController.displayVictory();
-        } else {
-            ticTacToeGrid.classList.remove('no-pointer-events');
+            }
+            return false;
         }
     }
 
     const ticTacToeGrid = document.getElementById('tic-tac-toe');
-    const newGameButton = document.getElementById('new-game');
-
     ticTacToeGrid.addEventListener('click', (e) => {
         ticTacToeGrid.classList.add('no-pointer-events');
         const target = e.target.id;
@@ -164,17 +163,23 @@ const gameFlow = (() => {
             ticTacToeGrid.classList.remove('no-pointer-events');
             return;
         }
+
         const xWin = checkWinStatus();
         if (xWin === true) {
             return;
         }
+
         setTimeout(() => {
             gameboard.updateArray(aiMove(), oPlayer.string);
             incrementTurn();
-            checkWinStatus();
+            const oWin = checkWinStatus();
+            if (oWin === false) {
+                ticTacToeGrid.classList.remove('no-pointer-events');
+            }
         }, 400);
     })
-
+    
+    const newGameButton = document.getElementById('new-game');
     newGameButton.addEventListener('click', newGame);
 
     return { turn, incrementTurn, newGame, aiMove};
