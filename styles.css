@@ -8,6 +8,7 @@ body {
     color: white;
     display: grid;
     grid-template-columns: 1fr 3fr;
+    font-family: Roboto Condensed, 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #sidebar {
@@ -55,6 +56,7 @@ main {
     justify-content: center;
     align-items: center;
     font-size: xxx-large;
+    font-family: 'Delicious Handrawn', cursive;
 }
 
 .no-pointer-events {
@@ -67,4 +69,5 @@ main {
 
 button {
     padding: 8px;
+    font-family: inherit;
 }
