@@ -188,13 +188,6 @@ const gameFlow = (() => {
                     return gameboard.returnOpenPathSlot(i);
                 }
             }
-            let randomChoices = [];
-            for (let i = 0; i < gameboard.array.length; i++) {
-                if (gameboard.checkAvailable(i)) {
-                    randomChoices.push(i);
-                }
-            return randomChoices[Math.floor(Math.random() * randomChoices.length)];
-            }
         }
     }
 
