@@ -6,9 +6,15 @@ html, body {
 body {
     background: linear-gradient(to right, #4E31AA, #2F58CD);
     color: white;
+    font-family: Roboto Condensed, 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+main {
     display: grid;
     grid-template-columns: 1fr 3fr;
-    font-family: Roboto Condensed, 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #sidebar, #settings {
@@ -27,18 +33,17 @@ body {
     color: inherit;
 }
 
-main {
+#tic-tac-toe-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 1;
-    position: relative;
 }
 
 #tic-tac-toe {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    position: absolute;
+    grid-template-rows: repeat(3, 1fr);
     width: 400px;
     height: 400px;
 }
@@ -77,14 +82,26 @@ button {
     font-family: inherit;
 }
 
-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+footer, header {
     width: 100%;
-    margin-bottom: 32px;
-    font-size: 16px;
     text-align: center;
+}
+
+header {
+    margin-top: 16px;
+    margin-bottom: 0px;
+    font-size: 64px;
+}
+
+footer {
+    margin-top: 0px;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+footer > a {
+    color: inherit;
+    text-decoration: none;
 }
 
 .github-link { 
