@@ -14,14 +14,15 @@
 </head>
 <body>
     <div id="sidebar">
-        <div id="score">Score</div>
         <div id="x-player">X Player: <span id="x-player-score">0</span></div>
         <div id="o-player">O Player: <span id="o-player-score">0</span></div>
         <div id="settings">Settings
-            <input type="radio" name="difficulty" id="easy" value="easy" checked>
-            <label for="easy">Easy</label>
-            <input type="radio" name="difficulty" id="hard" value="hard">
-            <label for="hard">Hard</label>
+            <div>
+                <input type="radio" name="difficulty" id="easy" value="easy">
+                <label for="easy">Easy</label>
+                <input type="radio" name="difficulty" id="hard" value="hard" checked>
+                <label for="hard">Hard</label>
+            </div>
         </div>
     </div>
     <main>
@@ -41,6 +42,7 @@
         <p id="victory-text">Congratulations!</p>
         <button id="new-game">Start New Game</button>
     </div>
+    <footer>Designed by Mark Elliott <a href="https://github.com/Mark-Elliott5"><img class="github-link" src="images/github-mark-white.png"></a></footer>
     <script src="tictactoe.js"></script>
 </body>
 </html>
