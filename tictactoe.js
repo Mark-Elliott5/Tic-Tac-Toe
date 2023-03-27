@@ -17,18 +17,7 @@ const gameboard = (() => {
     };
 
     const checkVictory = () => {
-        const oneTwoThreeString = array.slice(0,3).join('');
-        const fourFiveSixString = array.slice(3,6).join('');
-        const sevenEightNineString = array.slice(6,9).join('');
-        const oneFourSevenString = array[0] + array[3] + array[6];
-        const twoFiveEightString = array[1] + array[4] + array[7];
-        const threeSixNineString = array[2] + array[5] + array[8];
-        const oneFiveNineString = array[0] + array[4] + array[8];
-        const threeFiveSevenString = array[2] + array[4] + array[6];
-        const victoryPaths = [];
-        victoryPaths.push(oneTwoThreeString, fourFiveSixString,
-            sevenEightNineString, oneFourSevenString, twoFiveEightString, 
-            threeSixNineString, oneFiveNineString, threeFiveSevenString);
+        const victoryPaths = returnPaths();
         let win = false;
         let player = '';
         for (let i = 0; i < victoryPaths.length; i++) {
@@ -43,6 +32,48 @@ const gameboard = (() => {
         return { win, player };
     };
 
+    const returnPaths = () => {
+        const oneTwoThreeString = array.slice(0,3).join('');
+        const fourFiveSixString = array.slice(3,6).join('');
+        const sevenEightNineString = array.slice(6,9).join('');
+        const oneFourSevenString = array[0] + array[3] + array[6];
+        const twoFiveEightString = array[1] + array[4] + array[7];
+        const threeSixNineString = array[2] + array[5] + array[8];
+        const oneFiveNineString = array[0] + array[4] + array[8];
+        const threeFiveSevenString = array[2] + array[4] + array[6];
+        const victoryPaths = [];
+        victoryPaths.push(oneTwoThreeString, fourFiveSixString,
+            sevenEightNineString, oneFourSevenString, twoFiveEightString, 
+            threeSixNineString, oneFiveNineString, threeFiveSevenString);
+        return victoryPaths;
+    }
+
+    const returnOpenPathSlot = (input) => {
+        let choices;
+        if (input === 0) {
+            choices = [0, 1, 2];
+        } if (input === 1) {
+            choices = [3, 4, 5];
+        } if (input === 2) {
+            choices = [6, 7, 8];
+        } if (input === 3) {
+            choices = [0, 3, 6];
+        } if (input === 4) {
+            choices = [1, 4, 7];
+        } if (input === 5) {
+            choices = [2, 5, 8];
+        } if (input === 6) {
+            choices = [0, 4, 8];
+        } if (input === 7) {
+            choices = [2, 4, 6];
+        }
+        for (let i = 0; i < choices.length; i++) {
+            if (checkAvailable(choices[i])) {
+                return choices[i];
+            }
+        }
+    }
+
     const clearArray = () => {
         for (let i = 0; i < array.length; i++) {
             array[i] = '';
@@ -50,7 +81,7 @@ const gameboard = (() => {
         displayController.update(array);
     };
 
-    return { array, updateArray, checkAvailable, checkVictory, clearArray };
+    return { array, updateArray, checkAvailable, checkVictory, clearArray, returnPaths, returnOpenPathSlot };
 })();
 
 const player = (string, winCount) => {
@@ -131,6 +162,7 @@ const gameFlow = (() => {
 
     const aiMove = () => {
         const easyDifficulty = document.getElementById('easy');
+        const hardDifficulty = document.getElementById('hard');
         if (easyDifficulty.checked) {
             let possibleChoices = [];
             for (let i = 0; i < gameboard.array.length; i++) {
@@ -139,6 +171,30 @@ const gameFlow = (() => {
                 }
             }
             return possibleChoices[Math.floor(Math.random() * possibleChoices.length)];
+        } if (hardDifficulty.checked) {
+            const currentPathStates = gameboard.returnPaths();
+            for (let i = 0; i < currentPathStates.length; i++) {
+                if (currentPathStates[i] === 'OO') {
+                    return gameboard.returnOpenPathSlot(i);
+                } 
+            }
+            for (let i = 0; i < currentPathStates.length; i++) {
+                if (currentPathStates[i] === 'XX') {
+                    return gameboard.returnOpenPathSlot(i);
+                }
+            }
+            for (let i = 0; i < currentPathStates.length; i++) {
+                if ((currentPathStates[i] === 'O') || (currentPathStates[i] === 'X')) {
+                    return gameboard.returnOpenPathSlot(i);
+                }
+            }
+            let randomChoices = [];
+            for (let i = 0; i < gameboard.array.length; i++) {
+                if (gameboard.checkAvailable(i)) {
+                    randomChoices.push(i);
+                }
+            return randomChoices[Math.floor(Math.random() * randomChoices.length)];
+            }
         }
     }
 
