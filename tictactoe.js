@@ -83,7 +83,7 @@ const gameboard = (() => {
         displayController.update(array);
     };
 
-    return { array, updateArray, checkAvailable, checkVictory, clearArray, returnPaths, returnOpenPathSlot };
+    return { updateArray, checkAvailable, checkVictory, clearArray, returnPaths, returnOpenPathSlot };
 })();
 
 const player = (string, winCount) => {
@@ -108,7 +108,7 @@ const displayController = (() => {
 
     const displayVictory = (winner) => {
         const victoryScreen = document.getElementById('victory-screen');
-        const victoryText = document.getElementById('victory-text')
+        const victoryText = document.getElementById('victory-text');
         if (winner) {
             victoryText.innerText = `Congratulations ${winner}! You have won 
             the match!`;
@@ -167,7 +167,7 @@ const gameFlow = (() => {
         const hardDifficulty = document.getElementById('hard');
         if (easyDifficulty.checked) {
             let possibleChoices = [];
-            for (let i = 0; i < gameboard.array.length; i++) {
+            for (let i = 0; i < 9; i++) {
                 if (gameboard.checkAvailable(i)) {
                     possibleChoices.push(i);
                 }
@@ -239,5 +239,5 @@ const gameFlow = (() => {
     const newGameButton = document.getElementById('new-game');
     newGameButton.addEventListener('click', newGame);
 
-    return { turn, incrementTurn, newGame, aiMove};
+    return { newGame, aiMove };
 })();
