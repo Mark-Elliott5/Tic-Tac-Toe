@@ -67,11 +67,13 @@ const gameboard = (() => {
         } if (input === 7) {
             choices = [2, 4, 6];
         }
+        let possibleChoices = [];
         for (let i = 0; i < choices.length; i++) {
             if (checkAvailable(choices[i])) {
-                return choices[i];
+                possibleChoices.push(choices[i]);
             }
         }
+        return possibleChoices[Math.floor(Math.random() * possibleChoices.length)];
     }
 
     const clearArray = () => {
